@@ -16,9 +16,24 @@ def hello_world():
 # 또한 method에 따라 값을 다르게 하는 것도 가능
 def post_test():
     if request.method == 'GET':
-        return 'GET이구나~'
+        return request.args['test']
     elif request.method == 'POST':
-        return 'POST이구나~'
+        return request.form['test']
+
+@app.route('/mix', methods=['POST'])
+def mixed_parameter():
+    return request.values['mix']
+
+@app.route('/json', methods=['POST'])
+def get_json():
+    req = request.get_json();
+
+    if not request.is_json:
+        return 'Please set your content type "application/json"!', 400
+
+    print(type(req));
+
+    return str(req['json'])
 
 app.add_url_rule('/2', 'something', lambda: 'Hi!')
 
